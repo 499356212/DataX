@@ -1,0 +1,58 @@
+{
+  "job": {
+    "setting": {
+      "speed": {
+        "channel": 32,
+        "record": -1,
+        "byte": -1,
+        "batchSize": 4086
+      }
+    },
+    "content": [
+      {
+        "reader": {
+          "name": "mysqlreader",
+          "parameter": {
+            "username": "root",
+            "password": "root@800",
+            "connection": [
+              {
+                "querySql": [
+                  "SELECT t.id AS `id`, t.description AS location from uat_partner.t_house_info t where t.id = 2111091625432427191;"
+                ],
+                "jdbcUrl": [
+                  "jdbc:mysql://139.159.225.211:3306"
+                ]
+              }
+            ]
+          }
+        },
+        "writer": {
+          "name": "elasticsearchwriter",
+          "parameter": {
+            "endpoint": "http://124.71.98.207:9200",
+            "accessId": "elastic",
+            "accessKey": "enKey!es@hp2020",
+            "index": "pmis_house_info_20211029_index",
+            "type": "_doc",
+            "cleanup": false,
+            "dynamic": false,
+            "batchSize": 1000,
+            "trySize": 30,
+            "multiThread": true,
+            "column": [
+              {
+                "name": "id",
+                "type": "long"
+              },
+              {
+                "name": "location",
+                "type": "geo_point"
+              }
+            ]
+          }
+        }
+      }
+    ]
+  }
+}
